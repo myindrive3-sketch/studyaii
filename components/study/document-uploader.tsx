@@ -95,7 +95,7 @@ export function DocumentUploader({
         >
           <input
             type="file"
-            accept=".pdf,.docx,.pptx,.txt,.md,.markdown"
+            accept=".pdf,.doc,.docx,.pptx,.txt,.md,.markdown"
             className="absolute inset-0 cursor-pointer opacity-0"
             disabled={disabled || isUploading}
             onChange={(e) => {

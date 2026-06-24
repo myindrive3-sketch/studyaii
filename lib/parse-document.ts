@@ -7,6 +7,7 @@ export const SUPPORTED_EXTENSIONS = [
   '.txt',
   '.md',
   '.markdown',
+  '.doc',
   '.docx',
   '.pptx',
 ] as const;
@@ -55,6 +56,6 @@ export async function extractTextFromFile(file: File): Promise<string> {
   }
 
   throw new Error(
-    'Unsupported file type. Upload PDF, DOCX, PPTX, TXT, or MD files.'
+    'Unsupported file type. Upload PDF, DOC, DOCX, PPTX, TXT, or MD files.'
   );
 }
