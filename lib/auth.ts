@@ -32,17 +32,27 @@ function resolveEnv(key: string) {
 const googleClientId = resolveEnv('GOOGLE_CLIENT_ID');
 const googleClientSecret = resolveEnv('GOOGLE_CLIENT_SECRET');
 
-const authBaseUrl = process.env.BETTER_AUTH_URL || 'http://localhost:3000';
+const authBaseUrl =
+  process.env.BETTER_AUTH_URL ||
+  process.env.NEXT_PUBLIC_BETTER_AUTH_URL ||
+  'http://localhost:3000';
 
 function computeTrustedOrigins() {
-  const envList = (process.env.TRUSTED_ORIGINS || '')
+  const envList = (
+    process.env.TRUSTED_ORIGINS || process.env.NEXT_PUBLIC_TRUSTED_ORIGINS || ''
+  )
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean);
 
+  const fallbackOrigins = [
+    authBaseUrl,
+    process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
+  ].filter(Boolean) as string[];
+
   // Production should be strict: only allow the deployed URL(s).
   if (process.env.NODE_ENV === 'production') {
-    return Array.from(new Set([authBaseUrl, ...envList]));
+    return Array.from(new Set([...fallbackOrigins, ...envList]));
   }
 
   // Development convenience: allow common localhost variants.
