@@ -35,19 +35,30 @@ const googleClientSecret = resolveEnv('GOOGLE_CLIENT_SECRET');
 const authBaseUrl =
   process.env.BETTER_AUTH_URL ||
   process.env.NEXT_PUBLIC_BETTER_AUTH_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined) ||
+  (process.env.NEXT_PUBLIC_VERCEL_URL ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` : undefined) ||
   'http://localhost:3000';
 
 function computeTrustedOrigins() {
   const envList = (
-    process.env.TRUSTED_ORIGINS || process.env.NEXT_PUBLIC_TRUSTED_ORIGINS || ''
+    process.env.TRUSTED_ORIGINS ||
+    process.env.NEXT_PUBLIC_TRUSTED_ORIGINS ||
+    ''
   )
     .split(',')
     .map((s) => s.trim())
     .filter(Boolean);
 
+  const vercelOrigin =
+    process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`;
+  const publicVercelOrigin =
+    process.env.NEXT_PUBLIC_VERCEL_URL && `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+
   const fallbackOrigins = [
     authBaseUrl,
     process.env.NEXT_PUBLIC_BETTER_AUTH_URL,
+    vercelOrigin,
+    publicVercelOrigin,
   ].filter(Boolean) as string[];
 
   // Production should be strict: only allow the deployed URL(s).
