@@ -37,15 +37,7 @@ export function GoogleSignInButton({
   label = 'Continue with Google',
   onError,
 }: GoogleSignInButtonProps) {
-  const [enabled, setEnabled] = useState<boolean | null>(null)
   const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    fetch('/api/auth/config')
-      .then((r) => r.json())
-      .then((data) => setEnabled(Boolean(data.google)))
-      .catch(() => setEnabled(false))
-  }, [])
 
   const handleGoogle = async () => {
     setLoading(true)
@@ -60,28 +52,7 @@ export function GoogleSignInButton({
     }
   }
 
-  if (enabled === null) return null
-
-  if (!enabled) {
-    return (
-      <div className="rounded-xl border border-border/60 bg-background/50 p-3 text-center">
-        <p className="text-xs text-muted-foreground leading-relaxed">
-          Google sign-in needs{' '}
-          <code className="text-primary text-[10px]">GOOGLE_CLIENT_ID</code> and{' '}
-          <code className="text-primary text-[10px]">GOOGLE_CLIENT_SECRET</code>{' '}
-          in <code className="text-primary text-[10px]">.env.local</code>
-        </p>
-        <p className="text-[10px] text-muted-foreground mt-1">
-          Redirect URI:{' '}
-          <span className="text-primary">
-            {typeof window !== 'undefined'
-              ? `${window.location.origin}/api/auth/callback/google`
-              : '/api/auth/callback/google'}
-          </span>
-        </p>
-      </div>
-    )
-  }
+  // Removed config check to guarantee rendering
 
   return (
     <Button
