@@ -378,3 +378,5 @@ function StudyMode({ deck, onClose }: { deck: Deck; onClose: () => void }) {
   )
 }
 
+
+
